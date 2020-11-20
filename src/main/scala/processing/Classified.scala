@@ -12,4 +12,4 @@ import org.bytedeco.javacpp.opencv_core.Rect
  * There is nothing *face* specific in this class per say; it can hold ids and Rects for any detected
  * object
  */
-case class Face(id: Long, faceRect: Rect)
+case class Classified(id: Long, classRect: Rect)
