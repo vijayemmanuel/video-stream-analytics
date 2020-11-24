@@ -5,13 +5,13 @@ import akka.stream.actor.ActorPublisher
 import akka.stream.actor.ActorPublisherMessage.{ Cancel, Request }
 import video.LocalCamFramePublisher.{ Continue, buildGrabber }
 import org.bytedeco.javacv.FrameGrabber.ImageMode
-import org.bytedeco.javacv.{ FFmpegFrameGrabber, Frame, FrameGrabber }
+import org.bytedeco.javacv.{ FFmpegFrameGrabber, FFmpegLogCallback, Frame, FrameGrabber, OpenCVFrameGrabber, VideoInputFrameGrabber }
 
 /**
  * Actor that backs the Akka Stream source
  */
 private[video] class LocalCamFramePublisher(
-    deviceId: Int,
+    devicePath: String,
     imageWidth: Int,
     imageHeight: Int,
     bitsPerPixel: Int,
@@ -22,7 +22,7 @@ private[video] class LocalCamFramePublisher(
 
   // Lazy so that nothing happens until the flow begins
   private lazy val grabber: FrameGrabber = buildGrabber(
-    deviceId = deviceId,
+    devicePath = devicePath,
     imageWidth = imageWidth,
     imageHeight = imageHeight,
     bitsPerPixel = bitsPerPixel,
@@ -43,6 +43,7 @@ private[video] class LocalCamFramePublisher(
        */
       grabFrame().foreach(onNext)
       if (totalDemand > 0) {
+        Thread.sleep(100)
         self ! Continue
       }
     }
@@ -55,10 +56,10 @@ private[video] class LocalCamFramePublisher(
 
 object LocalCamFramePublisher {
 
-  def props(deviceId: Int, width: Int, height: Int, bitsPerPixel: Int, imageMode: ImageMode): Props =
+  def props(devicePath: String, width: Int, height: Int, bitsPerPixel: Int, imageMode: ImageMode): Props =
     Props(
       new LocalCamFramePublisher(
-        deviceId = deviceId,
+        devicePath = devicePath,
         imageWidth = width,
         imageHeight = height,
         bitsPerPixel = bitsPerPixel,
@@ -70,13 +71,13 @@ object LocalCamFramePublisher {
 
   // Building a started grabber seems finicky if not synchronised; there may be some freaky stuff happening somewhere.
   private[video] def buildGrabber(
-    deviceId: Int,
+    devicePath: String,
     imageWidth: Int,
     imageHeight: Int,
     bitsPerPixel: Int,
     imageMode: ImageMode
   ): FrameGrabber = synchronized {
-    val g = FrameGrabber.createDefault(deviceId)
+    val g = FrameGrabber.createDefault(devicePath)
     g.setImageWidth(imageWidth)
     g.setImageHeight(imageHeight)
     g.setBitsPerPixel(bitsPerPixel)

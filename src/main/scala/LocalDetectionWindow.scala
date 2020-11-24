@@ -17,7 +17,10 @@ object LocalDetectionWindow extends App {
   canvas.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE)
 
   val imageDimensions = Dimensions(width = 640, height = 480)
-  val localCameraSource = Webcam.local(deviceId = 0, dimensions = imageDimensions)
+  val localCameraSource = Webcam.local(
+    devicePath = "/Users/vijay/Downloads/WhatsAppVideo2019-11-23at18.36.19.mp4",
+    dimensions = imageDimensions
+  )
 
   val graph = localCameraSource
     .map(MediaConversion.frameToMat)

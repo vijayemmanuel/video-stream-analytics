@@ -4,7 +4,8 @@ addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.6.0")
 
 // addSbtPlugin("com.beachape" % "sbt-opencv" % "1.5")
 
-addSbtPlugin("org.bytedeco" % "sbt-javacv" % "1.11")
+addSbtPlugin("org.bytedeco" % "sbt-javacv" % "1.14")
+addSbtPlugin("org.bytedeco" % "sbt-javacpp" % "1.11")
 
 // This plugin represents functionality that is to be added to sbt in the future
 

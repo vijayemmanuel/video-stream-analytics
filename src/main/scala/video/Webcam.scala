@@ -23,12 +23,12 @@ object Webcam {
     import org.bytedeco.javacv.FrameGrabber.ImageMode
 
     def apply(
-      deviceId: Int,
+      devicePath: String,
       dimensions: Dimensions,
       bitsPerPixel: Int = CV_8U,
       imageMode: ImageMode = ImageMode.COLOR
     )(implicit system: ActorSystem): Source[Frame, NotUsed] = {
-      val props: Props = LocalCamFramePublisher.props(deviceId, dimensions.width, dimensions.height, bitsPerPixel, imageMode)
+      val props: Props = LocalCamFramePublisher.props(devicePath, dimensions.width, dimensions.height, bitsPerPixel, imageMode)
       val webcamActorRef = system.actorOf(props)
       val localActorPublisher = ActorPublisher[Frame](webcamActorRef)
 

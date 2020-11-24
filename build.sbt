@@ -4,6 +4,11 @@ version := "1.0"
 
 val akkaVersion = "2.4.12"
 
+fork := true
+javaCppPresetLibs ++= Seq(
+  "ffmpeg" -> "3.2.1"
+)
+
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-stream" % akkaVersion,
