@@ -18,7 +18,7 @@ object RemoteSmileDetectionWindow extends App {
   val logger = LoggerFactory.getLogger(getClass)
 
   implicit val system = ActorSystem()
-  implicit val materializer = ActorMaterializer()
+  //implicit val materializer = ActorMaterializer()
 
   implicit val ec = system.dispatcher
 

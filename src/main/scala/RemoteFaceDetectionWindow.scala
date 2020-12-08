@@ -9,6 +9,8 @@ import transform.{ Flip, MediaConversion, WithGrey }
 import video.ImageProcessingSinks.ShowImageSink
 import video.{ RPiCamWebInterface, Webcam }
 
+import akka.stream.alpakka.mqtt.{ MqttConnectionSettings, MqttMessage, MqttQoS, MqttSourceSettings }
+
 /**
  * Our detection window; opened by Initial Frame
  */
@@ -17,7 +19,7 @@ object RemoteFaceDetectionWindow extends App {
   val logger = LoggerFactory.getLogger(getClass)
 
   implicit val system = ActorSystem()
-  implicit val materializer = ActorMaterializer()
+  //implicit val materializer = ActorMaterializer()
 
   implicit val ec = system.dispatcher
 
@@ -40,6 +42,7 @@ object RemoteFaceDetectionWindow extends App {
         .map(x => drawer.annotate(x._1, x._2, "face"))
         .map(MediaConversion.matToFrame) // convert back to a frame
         .to(ShowImageSink(canvas))
+
     )
 
   graph.map(_.run())

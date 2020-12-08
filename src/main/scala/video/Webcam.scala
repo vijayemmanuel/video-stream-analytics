@@ -6,7 +6,7 @@ import akka.event.Logging
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpRequest
 import akka.stream._
-import akka.stream.actor.ActorPublisher
+//import akka.stream.actor.ActorPublisher
 import akka.stream.scaladsl.{ Flow, Source }
 import akka.util.{ ByteString, Timeout }
 import common.Dimensions
@@ -28,11 +28,14 @@ object Webcam {
       bitsPerPixel: Int = CV_8U,
       imageMode: ImageMode = ImageMode.COLOR
     )(implicit system: ActorSystem): Source[Frame, NotUsed] = {
-      val props: Props = LocalCamFramePublisher.props(devicePath, dimensions.width, dimensions.height, bitsPerPixel, imageMode)
-      val webcamActorRef = system.actorOf(props)
-      val localActorPublisher = ActorPublisher[Frame](webcamActorRef)
+      //val props: Props = LocalCamFramePublisher.props(devicePath, dimensions.width, dimensions.height, bitsPerPixel, imageMode)
+      //val webcamActorRef = system.actorOf(props)
+      //val localActorPublisher = ActorPublisher[Frame](webcamActorRef)
 
-      Source.fromPublisher(localActorPublisher)
+      //Source.fromPublisher(localActorPublisher)
+      val sourceGraph: Graph[SourceShape[Frame], NotUsed] = new LocalCamFramePublisher(devicePath, dimensions.width, dimensions.height, bitsPerPixel, imageMode)
+
+      Source.fromGraph(sourceGraph)
     }
   }
 

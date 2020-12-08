@@ -13,7 +13,7 @@ object GroupedSource extends App {
 
   implicit val system = ActorSystem("MySystem")
 
-  implicit val mat = ActorMaterializer()
+  //implicit val mat = ActorMaterializer()
 
   val data = 1 to 99
 

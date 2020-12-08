@@ -1,10 +1,11 @@
 package modify
 
-import processing.{ Classified }
+import processing.Classified
 import transform.WithGrey
 import org.bytedeco.javacpp.helper.opencv_core.AbstractCvScalar
 import org.bytedeco.javacpp.opencv_core._
 import org.bytedeco.javacpp.opencv_imgproc._
+import akka.util.ByteString
 
 /**
  * Created by Vijay on 20/11/20.
@@ -19,7 +20,9 @@ class AnnotateDrawer(fontScale: Float = 0.6f) {
    */
   def annotate(withGrey: WithGrey, faces: Seq[Classified], text: String): Mat = {
     val clonedMat = withGrey.orig.clone()
-    for (f <- faces) annotateMe(clonedMat, f, text)
+    for (f <- faces) {
+      annotateMe(clonedMat, f, text)
+    }
     clonedMat
   }
 

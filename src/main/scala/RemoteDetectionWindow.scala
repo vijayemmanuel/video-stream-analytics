@@ -13,7 +13,7 @@ object RemoteDetectionWindow extends App {
   val logger = LoggerFactory.getLogger(getClass)
 
   implicit val system = ActorSystem()
-  implicit val materializer = ActorMaterializer()
+  //implicit val materializer = ActorMaterializer()
 
   val canvas = new CanvasFrame("Webcam")
   canvas.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE)

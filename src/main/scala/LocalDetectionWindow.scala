@@ -10,7 +10,7 @@ import video.Webcam
 object LocalDetectionWindow extends App {
 
   implicit val system = ActorSystem()
-  implicit val materializer = ActorMaterializer()
+  //implicit val materializer = ActorMaterializer()
 
   val canvas = new CanvasFrame("Webcam")
   //  //Set Canvas frame to close on exit

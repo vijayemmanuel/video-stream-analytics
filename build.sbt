@@ -2,7 +2,7 @@ name := "video-stream-analytics"
 
 version := "1.0"
 
-val akkaVersion = "2.4.12"
+val akkaVersion = "2.6.0"
 
 fork := true
 javaCppPresetLibs ++= Seq(
@@ -12,13 +12,15 @@ javaCppPresetLibs ++= Seq(
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-stream" % akkaVersion,
-  "com.typesafe.akka" %% "akka-stream-contrib" % "0.4",
+  "com.typesafe.akka" %% "akka-stream-contrib" % "0.11",
   //"com.typesafe.akka" %% "akka-http-core" % akkaVersion,
-  "com.typesafe.akka" %% "akka-http-core" % "2.4.9",
-  "com.typesafe.akka" %% "akka-http-experimental" % "2.4.9",
-  "org.typelevel" %% "cats" % "0.8.0",
+  "com.typesafe.akka" %% "akka-http-core" % "10.0.1",
+  //"com.typesafe.akka" %% "akka-http-experimental" % "10.0.1",
+  "org.typelevel" %% "cats" % "0.9.0",
+  //mqtt
+  "com.lightbend.akka" %% "akka-stream-alpakka-mqtt" % "0.15.1",
   // mapping
-  "com.typesafe.play" %% "play-json" % "2.5.8",
+  "com.typesafe.play" %% "play-json" % "2.9.1",
   // logs
   "com.typesafe.akka" %% "akka-slf4j" % akkaVersion,
   "ch.qos.logback"    %  "logback-classic" % "1.1.3",

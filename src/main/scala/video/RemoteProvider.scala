@@ -15,7 +15,7 @@ case class RPiCamWebInterface(host: String) extends RemoteProvider {
 
   val height = 288
 
-  //The pDelay is the interval between frames in microseconds
-  override def uri: String = s"http://$host/html/cam_pic_new.php?pDelay=1000000"
+  //The pDelay is the interval between frames in microseconds Here is 4Hz= 250000
+  override def uri: String = s"http://$host/html/cam_pic_new.php?pDelay=250000"
 
 }

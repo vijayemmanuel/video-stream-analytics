@@ -14,7 +14,7 @@ object MapConcatSource extends App {
 
   implicit val system = ActorSystem("MySystem")
 
-  implicit val mat = ActorMaterializer()
+  //implicit val mat = ActorMaterializer()
 
   val data = ('a' to 'z').toList
     .zipWithIndex
