@@ -16,9 +16,9 @@ object FaceDetector {
    */
   def defaultCascadeFile(
     dimensions: Dimensions,
-    scaleFactor: Double = 1.1,
-    minNeighbours: Int = 5,
-    detectorFlag: HaarDetectorFlag = HaarDetectorFlag.ScaleImage,
+    scaleFactor: Double = 1.05,
+    minNeighbours: Int = 3,
+    detectorFlag: HaarDetectorFlag = HaarDetectorFlag.DoCannyPruning,
     minSize: Dimensions = Dimensions(width = 30, height = 30),
     maxSize: Option[Dimensions] = None
   ): FaceDetector = {
@@ -39,9 +39,9 @@ object FaceDetector {
 class FaceDetector(
     val dimensions: Dimensions,
     classifierPath: String,
-    scaleFactor: Double = 1.3,
+    scaleFactor: Double = 1.05,
     minNeighbours: Int = 3,
-    detectorFlag: HaarDetectorFlag = HaarDetectorFlag.ScaleImage,
+    detectorFlag: HaarDetectorFlag = HaarDetectorFlag.DoCannyPruning,
     minSize: Dimensions = Dimensions(width = 30, height = 30),
     maxSize: Option[Dimensions] = None
 ) {
@@ -66,8 +66,8 @@ class FaceDetector(
 
   private def findFaces(greyMat: Mat): RectVector = {
     val faceRects = new RectVector()
-    faceCascade.detectMultiScale(greyMat, faceRects)
-    //faceCascade.detectMultiScale(greyMat, faceRects, scaleFactor, minNeighbours, detectorFlag.flag, minSizeOpenCV, maxSizeOpenCV)
+    //faceCascade.detectMultiScale(greyMat, faceRects)
+    faceCascade.detectMultiScale(greyMat, faceRects, scaleFactor, minNeighbours, detectorFlag.flag, minSizeOpenCV, maxSizeOpenCV)
     faceRects
   }
 

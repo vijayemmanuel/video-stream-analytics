@@ -5,8 +5,6 @@ import transform.WithGrey
 import org.bytedeco.javacpp.helper.opencv_core.AbstractCvScalar
 import org.bytedeco.javacpp.opencv_core._
 import org.bytedeco.javacpp.opencv_imgproc._
-import akka.util.ByteString
-
 /**
  * Created by Vijay on 20/11/20.
  */

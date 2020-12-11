@@ -1,15 +1,13 @@
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import common.{ ConfigReader, Dimensions }
-import modify.{ AnnotateDrawer }
+import modify.AnnotateDrawer
 import org.bytedeco.javacv.CanvasFrame
 import org.slf4j.LoggerFactory
-import processing.FaceDetector
+import processing.{ FaceDetector, MqttPublisher }
 import transform.{ Flip, MediaConversion, WithGrey }
 import video.ImageProcessingSinks.ShowImageSink
 import video.{ RPiCamWebInterface, Webcam }
-
-import akka.stream.alpakka.mqtt.{ MqttConnectionSettings, MqttMessage, MqttQoS, MqttSourceSettings }
 
 /**
  * Our detection window; opened by Initial Frame
@@ -25,7 +23,7 @@ object RemoteFaceDetectionWindow extends App {
 
   val imageDimensions = Dimensions(width = 512, height = 288)
   val detector = FaceDetector.defaultCascadeFile(imageDimensions)
-
+  val mqttPublisher = new MqttPublisher()
   val webcamSource = Webcam.remote(RPiCamWebInterface(ConfigReader.host))
 
   val canvas = new CanvasFrame("Webcam")
@@ -39,6 +37,7 @@ object RemoteFaceDetectionWindow extends App {
       _.map(Flip.vertical)
         .map(WithGrey.build)
         .map(detector.detect)
+        .map(x => mqttPublisher.publish(system, x._1, x._2))
         .map(x => drawer.annotate(x._1, x._2, "face"))
         .map(MediaConversion.matToFrame) // convert back to a frame
         .to(ShowImageSink(canvas))
