@@ -2,11 +2,11 @@ package processing
 
 import akka.Done
 import akka.actor.ActorSystem
-import akka.stream.alpakka.mqtt.scaladsl.MqttSink
-import akka.stream.alpakka.mqtt.{ MqttConnectionSettings, MqttMessage, MqttQoS }
-import akka.stream.scaladsl.{ Sink, Source }
+import akka.actor.Status.Success
+import akka.stream.alpakka.mqtt.scaladsl.{MqttSink, MqttSource}
+import akka.stream.alpakka.mqtt.{MqttConnectionSettings, MqttMessage, MqttQoS, MqttSubscriptions}
+import akka.stream.scaladsl.{Keep, Sink, Source}
 import akka.util.ByteString
-import common.Dimensions
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence
 import transform.WithGrey
 
@@ -18,22 +18,30 @@ import scala.concurrent.Future
 object MqttPublisher {
 }
 
-class MqttPublisher() {
+class MqttPublisher(host: String, port: String, user: String, pwd: String) {
   val connectionSettings = MqttConnectionSettings(
-    "tcp://192.168.1.88:1883",
+    s"tcp://$host:$port",
     "tcp-client",
     new MemoryPersistence
-  ).withAuth("mqtt", "mqtt")
+  ).withAuth(s"$user", s"$pwd")
 
   /**
    * Given a detected faces , publish to MQTT
    */
   def publish(system: ActorSystem, grey: WithGrey, faces: Seq[Classified]): (WithGrey, Seq[Classified]) = {
     implicit val ec = system
-    val sink: Sink[MqttMessage, Future[Done]] =
+    val mqttSource: Source[MqttMessage, Future[Done]] =
+      MqttSource.atMostOnce(
+        connectionSettings,
+        MqttSubscriptions(Map("face_loop" -> MqttQoS.AtLeastOnce)),
+        bufferSize = 8
+      )
+    val mqttSink: Sink[MqttMessage, Future[Done]] =
       MqttSink(connectionSettings, MqttQoS.AtLeastOnce)
+
     if (faces.length != 0) {
-      Source.single(MqttMessage.create("face", ByteString("FACE DETECTED"))).runWith(sink)
+      // Trigger MQTT message
+      Source.single(MqttMessage.create("face", ByteString("FACE DETECTED"))).runWith(mqttSink)
     }
     (grey, faces)
   }

@@ -1,7 +1,7 @@
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
-import common.Dimensions
+import common.{ ConfigReader, Dimensions }
 import modify.AnnotateDrawer
 import org.bytedeco.javacv.CanvasFrame
 import org.slf4j.LoggerFactory
@@ -21,7 +21,7 @@ object LocalFaceDetectionindow extends App {
 
   val imageDimensions = Dimensions(width = 512, height = 288)
   val detector = FaceDetector.defaultCascadeFile(imageDimensions)
-  val mqttPublisher = new MqttPublisher()
+  val mqttPublisher = new MqttPublisher(ConfigReader.mqttHost, ConfigReader.mqttPort, ConfigReader.mqttUsername, ConfigReader.mqttPassword)
 
   val localCameraSource = Webcam.local(
     devicePath = "/Users/vijay/Downloads/WhatsAppVideo2019-11-23at18.36.19.mp4",

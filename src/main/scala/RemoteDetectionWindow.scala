@@ -20,7 +20,7 @@ object RemoteDetectionWindow extends App {
 
   implicit val ec = system.dispatcher
 
-  val remoteCameraSource = Webcam.remote(RPiCamWebInterface(ConfigReader.host))
+  val remoteCameraSource = Webcam.remote(RPiCamWebInterface(ConfigReader.camHost, ConfigReader.camPort))
 
   val graph = remoteCameraSource
     .map(

@@ -23,8 +23,8 @@ object RemoteFaceDetectionWindow extends App {
 
   val imageDimensions = Dimensions(width = 512, height = 288)
   val detector = FaceDetector.defaultCascadeFile(imageDimensions)
-  val mqttPublisher = new MqttPublisher()
-  val webcamSource = Webcam.remote(RPiCamWebInterface(ConfigReader.host))
+  val mqttPublisher = new MqttPublisher(ConfigReader.mqttHost, ConfigReader.mqttPort, ConfigReader.mqttUsername, ConfigReader.mqttPassword)
+  val webcamSource = Webcam.remote(RPiCamWebInterface(ConfigReader.camHost, ConfigReader.camPort))
 
   val canvas = new CanvasFrame("Webcam")
   //Set Canvas frame to close on exit

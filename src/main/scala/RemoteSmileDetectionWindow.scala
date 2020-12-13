@@ -26,7 +26,7 @@ object RemoteSmileDetectionWindow extends App {
   val detector = FaceDetector.defaultCascadeFile(imageDimensions)
   val smileDetector = SmileDetector.smileCascadeFile(imageDimensions)
 
-  val webcamSource = Webcam.remote(RPiCamWebInterface(ConfigReader.host))
+  val webcamSource = Webcam.remote(RPiCamWebInterface(ConfigReader.camHost, ConfigReader.camPort))
 
   val canvas = new CanvasFrame("Webcam")
   //Set Canvas frame to close on exit

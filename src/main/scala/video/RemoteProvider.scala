@@ -9,7 +9,7 @@ sealed trait RemoteProvider {
   def uri: String
 }
 
-case class RPiCamWebInterface(host: String) extends RemoteProvider {
+case class RPiCamWebInterface(host: String, port: String) extends RemoteProvider {
 
   val width = 512
 
@@ -20,6 +20,6 @@ case class RPiCamWebInterface(host: String) extends RemoteProvider {
   // 1Hz = 1000000,
   // 2Hz = 500000,
 
-  override def uri: String = s"http://$host/html/cam_pic_new.php?pDelay=1000000"
+  override def uri: String = s"http://$host:$port/html/cam_pic_new.php?pDelay=1000000"
 
 }
