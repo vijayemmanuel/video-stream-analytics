@@ -17,7 +17,7 @@ object FaceDetector {
   def defaultCascadeFile(
     dimensions: Dimensions,
     scaleFactor: Double = 1.05,
-    minNeighbours: Int = 3,
+    minNeighbours: Int = 6,
     detectorFlag: HaarDetectorFlag = HaarDetectorFlag.DoCannyPruning,
     minSize: Dimensions = Dimensions(width = 30, height = 30),
     maxSize: Option[Dimensions] = None
@@ -40,7 +40,7 @@ class FaceDetector(
     val dimensions: Dimensions,
     classifierPath: String,
     scaleFactor: Double = 1.05,
-    minNeighbours: Int = 3,
+    minNeighbours: Int = 6,
     detectorFlag: HaarDetectorFlag = HaarDetectorFlag.DoCannyPruning,
     minSize: Dimensions = Dimensions(width = 30, height = 30),
     maxSize: Option[Dimensions] = None

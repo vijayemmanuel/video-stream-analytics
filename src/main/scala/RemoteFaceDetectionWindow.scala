@@ -34,8 +34,8 @@ object RemoteFaceDetectionWindow extends App {
 
   val graph = webcamSource
     .map(
-      _.map(Flip.vertical)
-        .map(WithGrey.build)
+      //_.map(Flip.vertical)
+      _.map(WithGrey.build)
         .map(detector.detect)
         .map(x => mqttPublisher.publish(system, x._1, x._2))
         .map(x => drawer.annotate(x._1, x._2, "face"))

@@ -22,4 +22,6 @@ case class RPiCamWebInterface(host: String, port: String) extends RemoteProvider
 
   override def uri: String = s"http://$host:$port/html/cam_pic_new.php?pDelay=1000000"
 
+  //override def uri: String = s"http://$host:$port"
+
 }
